@@ -23,11 +23,11 @@ when people shove entire ESP functions into the render thread.
 
 call 
 ```cpp
-overlay->create_barrier(number_of_rendering_threads) to setup the custom barrier.
-overlay->create_thread_with_tasks(func, args) to create a rendering task. each call of this is one
-rendering_thread so it adds 1 to number_of_rendering_tasks.
-making this dynamic so you dont have to call create_barrier would be too much of a hassle.
-set_parameters sets overlay parameters, plans are to make it automatic.
-init() is self explanatory, call at the start in main.
-message_loop gets called last in main.
+overlay->create_barrier(number_of_rendering_threads) // to setup the custom barrier.
+overlay->create_thread_with_tasks(func, args) // to create a rendering task. each call of this is one
+// rendering_thread so it adds 1 to number_of_rendering_tasks.
+// making this dynamic so you dont have to call create_barrier would be too much of a hassle.
+set_parameters(parameters...) // sets overlay parameters, plans are to make it automatic.
+init() // self explanatory, call at the start in main.
+message_loop() // gets called last in main before cleanup()
 ```
