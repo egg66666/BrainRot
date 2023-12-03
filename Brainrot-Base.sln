@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Brainrot-Base", "Brainrot-Base.vcxproj", "{DAAF7627-BD52-45B9-B86D-6C80AE027906}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAAF7627-BD52-45B9-B86D-6C80AE027906}.Debug|x64.ActiveCfg = Debug|x64
+		{DAAF7627-BD52-45B9-B86D-6C80AE027906}.Debug|x64.Build.0 = Debug|x64
+		{DAAF7627-BD52-45B9-B86D-6C80AE027906}.Debug|x86.ActiveCfg = Debug|Win32
+		{DAAF7627-BD52-45B9-B86D-6C80AE027906}.Debug|x86.Build.0 = Debug|Win32
+		{DAAF7627-BD52-45B9-B86D-6C80AE027906}.Release|x64.ActiveCfg = Release|x64
+		{DAAF7627-BD52-45B9-B86D-6C80AE027906}.Release|x64.Build.0 = Release|x64
+		{DAAF7627-BD52-45B9-B86D-6C80AE027906}.Release|x86.ActiveCfg = Release|Win32
+		{DAAF7627-BD52-45B9-B86D-6C80AE027906}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54AEE372-E78B-4376-B11B-71DB90869CD6}
+	EndGlobalSection
+EndGlobal
