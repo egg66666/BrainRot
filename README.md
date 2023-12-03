@@ -15,7 +15,7 @@ class process - contains modules, singleton. call init(process_name) at the star
 initialize it and process.hijack_handle() to hijack the process handle. process id is obtained in the init function, unlike the handle.
 access modules via the overloaded [] operator. 
 ```cpp
-process["client.dll"]->get("CreateInterface"); returns create interface export.
+process["client.dll"]->get("CreateInterface"); // returns create interface export.
 ```
 overlay - WIP, will contain a thread safe way of queueing render tasks into the render thread from anywhere.
 main advantage is that the render thread won't have to fuck around with non-render tasks like syscalls etc..
