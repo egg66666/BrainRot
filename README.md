@@ -8,7 +8,7 @@ BrainRot, an external cheat library.
 - `globals`: Contains a handle; only one handle is necessary.
 
 ## Classes
-- `import`, `export`, `module`: Self-explanatory.
+- `_import`, `_export`, `_module`: Self-explanatory.
 - `process`: Singleton class that contains modules. Call `init(process_name)` at the start of your program to initialize it and `process.hijack_handle()` to hijack the process handle. Process ID is obtained in the `init` function. Access modules via the overloaded `[]` operator.
 
    ```cpp
