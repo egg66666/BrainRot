@@ -27,7 +27,7 @@
     <ClCompile Include="Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="overlay.cpp">
+    <ClCompile Include="overlay_dx11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="module.cpp">
@@ -74,7 +74,7 @@
     <ClInclude Include="Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="overlay.h">
+    <ClInclude Include="overlay_dx11.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="module.h">
@@ -116,5 +116,8 @@
     <ClInclude Include="misc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
   </ItemGroup>
 </Project>

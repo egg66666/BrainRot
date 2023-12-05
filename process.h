@@ -77,6 +77,12 @@ typedef struct _SYSTEM_HANDLE_INFORMATION
 } SYSTEM_HANDLE_INFORMATION, * PSYSTEM_HANDLE_INFORMATION;
 
 
+//class current_process : public process {
+//	uint32_t process_id = GetCurrentProcessId();
+//	std::unordered_map<std::string, _module*> modules;
+//
+//};
+
 class process {
 private:
 	std::unordered_map<std::string, _module*> modules;

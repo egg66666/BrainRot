@@ -162,7 +162,7 @@
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ntapi.cpp" />
-    <ClCompile Include="overlay.cpp" />
+    <ClCompile Include="overlay_dx11.cpp" />
     <ClCompile Include="process.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="module.cpp" />
@@ -182,10 +182,13 @@
     <ClInclude Include="misc.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="ntapi.h" />
-    <ClInclude Include="overlay.h" />
+    <ClInclude Include="overlay_dx11.h" />
     <ClInclude Include="process.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="module.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

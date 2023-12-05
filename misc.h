@@ -26,8 +26,8 @@ namespace misc {
 		}
 
 		void arrive_and_wait() {
-			std::unique_lock<std::mutex> lock(mtx);
 
+			std::unique_lock<std::mutex> lock(mtx);
 			if (!is_barrier_active) {
 				return;
 			}
