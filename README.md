@@ -16,14 +16,14 @@ BrainRot - an external cheat library
    ```
 - `overlay`: Work in progress, designed to provide a thread-safe way of queuing render tasks into the render thread from anywhere. The main advantage is that the render thread won't handle non-render tasks like syscalls. 
    ```cpp
-   // Set up the custom barrier.
-   overlay->create_barrier(number_of_rendering_threads);
-   // Create a rendering task. Each call of this adds 1 to the number of rendering tasks.
-   overlay->create_thread_with_tasks(func, args);
-   // Set overlay parameters; plans are to make it automatic.
-   set_parameters(parameters...);
-   // Call at the start in main.
-   init(); 
-   // Gets called last in main before cleanup().
-   message_loop();
+   //set up the overlay parameters
+   overlay->set_parameters(params..);
+   //initialize the overlay, create a custom render barrier
+   overlay->init(number_of_rendering_threads);
+   //create a thread with rendering tasks
+   overlay->create_thread_with_tasks(thread, args..);
+   //message loop, run in main before cleanup, careful as it BLOCKS MAIN. THIS IS INTENDED
+   overlay->message_loop();
+   //cleanup, run at the end of main.
+   overlay->cleanup();
    ```
