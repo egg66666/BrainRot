@@ -160,11 +160,38 @@ namespace util {
 			return result;
 		}
 
+
+		std::string sanitize_path(std::string& path) {
+			size_t exe_pos = path.find(".exe");
+			size_t dll_pos = path.find(".dll");
+
+			size_t cut_pos = std::string::npos;
+			if (exe_pos != std::string::npos && dll_pos != std::string::npos) {
+				cut_pos = std::min<size_t>(exe_pos, dll_pos);
+			}
+			else if (exe_pos != std::string::npos) {
+				cut_pos = exe_pos;
+			}
+			else if (dll_pos != std::string::npos) {
+				cut_pos = dll_pos;
+			}
+
+			if (cut_pos != std::string::npos) {
+				return path.substr(0, cut_pos + 4); 
+			}
+
+			return path; 
+		}
+
+		std::string sanitize_path(std::string&& path) {
+			return sanitize_path(static_cast<std::string&>(path));
+		}
+
 		std::string unicode_string_to_string(const UNICODE_STRING& unicode_string) {
 			if (unicode_string.Length == 0) {
 				return std::string();
 			}
-
+			
 			auto res = read_virtual_memory<std::array<wchar_t, 256>>(unicode_string.Buffer, unicode_string.Length);
 
 			auto string = wstring_to_string(sanitize_string(std::wstring_view(res.data(), unicode_string.Length)));

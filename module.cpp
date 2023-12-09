@@ -105,11 +105,14 @@ bool _module::init_module()
 
 	do {
 		LDR_DATA_TABLE_ENTRY current_entry = read_virtual_memory<LDR_DATA_TABLE_ENTRY>(CONTAINING_RECORD(next, LDR_DATA_TABLE_ENTRY, InMemoryOrderLinks));
-		std::string current_module_name = util::string::str_to_lower(util::string::extract_name_from_path(util::string::unicode_string_to_string(current_entry.FullDllName)));
-		if (util::string::str_contains(current_module_name, module_name_lower)) {
+		//std::string current_module_name = util::string::str_to_lower(util::string::extract_name_from_path(util::string::unicode_string_to_string(current_entry.FullDllName)));
+		std::string path = util::string::sanitize_path(util::string::unicode_string_to_string(current_entry.FullDllName));
+		std::string current_module_name = util::string::str_to_lower(util::string::extract_name_from_path(path));
+		if (util::string::str_contains(module_name_lower, current_module_name)) {
 			IMAGE_NT_HEADERS nt_headers = util::pe::get_nt_headers(current_entry.DllBase);
 			this->base = current_entry.DllBase;
 			this->size = nt_headers.OptionalHeader.SizeOfImage;
+			this->path = path;
 			this->entry = (void*)nt_headers.OptionalHeader.AddressOfEntryPoint;
 			this->name = current_module_name;
 			return true;

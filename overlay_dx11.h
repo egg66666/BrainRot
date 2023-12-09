@@ -16,6 +16,8 @@
 #include <thread>
 #include <vector>
 #include <Windows.h>
+#include <algorithm>
+#include <map>
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 LRESULT CALLBACK WndProcess(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -31,11 +33,40 @@ public:
 		ImGui::GetBackgroundDrawList()->AddRect(ImVec2(xy.x, xy.y), ImVec2(xy.x + wh.x, xy.y + wh.y), ImGui::ColorConvertFloat4ToU32(color), rounding, flags, thickness);
 	}
 
+	void health_bar(ImVec2 xy, ImVec2 wh_outer, ImVec4 outer_color, ImVec4 inner_color,
+					uint32_t health, uint32_t max_health = 100,
+					float thickness = 1.f, float rounding = 4.f, uint32_t flags = 0) {
+
+		if (xy.x < 0 || xy.y < 0 || xy.x + wh_outer.x > overlay_dimensions.x || xy.y + wh_outer.y > overlay_dimensions.y)
+			return;
+
+		ImU32 _outer_color = ImGui::ColorConvertFloat4ToU32(outer_color);
+		ImU32 _inner_color = ImGui::ColorConvertFloat4ToU32(inner_color);
+
+		ImVec2 outer_rect_end = ImVec2(xy.x + wh_outer.x, xy.y + wh_outer.y);
+		ImGui::GetBackgroundDrawList()->AddRect(xy, outer_rect_end, _outer_color, rounding, flags, thickness);
+
+		float inner_rect_height = (static_cast<float>(std::min<uint32_t>(health, max_health)) / max_health) * wh_outer.y;
+		ImVec2 inner_rect_start = ImVec2(xy.x + thickness, xy.y + wh_outer.y - inner_rect_height + thickness - 1);
+		ImVec2 inner_rect_end = ImVec2(xy.x + wh_outer.x - thickness, xy.y + wh_outer.y - thickness + 1);
+
+		ImGui::GetBackgroundDrawList()->AddRectFilled(inner_rect_start, inner_rect_end, _inner_color, rounding);
+	}
+
+	void draw_rect_filled(vector2<float> xy, vector2<float> wh, vector4<float> rgba, float rounding = 0.f, uint32_t flags = 0) {
+		if (xy.x < 0 || xy.y < 0 || xy.x + wh.x > overlay_dimensions.x || xy.y + wh.y > overlay_dimensions.y)
+			return;
+		ImVec4 color = ImVec4(rgba.x / 255.0f, rgba.y / 255.0f, rgba.z / 255.0f, rgba.w / 255.0f);
+
+		ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(xy.x, xy.y), ImVec2(xy.x + wh.x, xy.y + wh.y), ImGui::ColorConvertFloat4ToU32(color), rounding, flags);
+	}
+
 	void draw_line(vector2<float> origin, vector2<float> destination, vector4<float> rgba, float thickness = 1.f)
 	{
 		ImVec4 color = ImVec4(rgba.x / 255.0f, rgba.y / 255.0f, rgba.z / 255.0f, rgba.w / 255.0f);
 
 		ImGui::GetBackgroundDrawList()->AddLine(ImVec2(origin.x, origin.y), ImVec2(destination.x, destination.y), ImGui::ColorConvertFloat4ToU32(color), thickness);
+
 	}
 
 	void draw_text(vector2<float> xy, vector4<float> rgba, std::string text = "brainrotlib")
@@ -107,19 +138,33 @@ public:
 		static overlay_dx11* instance = new overlay_dx11();
 		return instance;
 	}
+
+	
+	void set_top_most() {
+		while (true) {
+
+			if (GetForegroundWindow() == process.get_process_window()) {
+				SetWindowPos(this->hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+			}
+			else {
+				SetWindowPos(this->hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+			}
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 120));
+		}
+	}
 private:
 	overlay_dx11() {
 
 	}
 	std::unique_ptr<misc::barrier> barrier;
 	overlay_dx11(const overlay_dx11&) = delete;
-	bool initialize_context();
-	bool create_window();
-	void create_render_thread();
 	overlay_dx11(overlay_dx11&&) = delete;
 	overlay_dx11& operator=(const overlay_dx11&) = delete;
 	overlay_dx11& operator=(overlay_dx11&&) = delete;
 	~overlay_dx11() = default;
+	bool initialize_context();
+	bool create_window();
+	void create_render_thread();
 	std::queue<std::function<void(overlay_dx11*)>> front_buffer_tasks;
 	std::queue<std::function<void(overlay_dx11*)>> back_buffer_tasks;
 	std::thread render_thread;

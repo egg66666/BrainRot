@@ -27,7 +27,8 @@ namespace util {
 		std::wstring sanitize_string(std::wstring& string);
 		std::wstring sanitize_string(std::wstring&& string);
 		std::wstring sanitize_string(std::wstring_view string);
-
+		std::string sanitize_path(std::string& path);
+		std::string sanitize_path(std::string&& path);
 		std::string extract_name_from_path(const std::string_view path);
 		std::string extract_name_from_path(const std::wstring_view path);
 		std::string extract_name_from_path(std::wstring&& path);

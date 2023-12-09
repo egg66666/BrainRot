@@ -65,6 +65,9 @@ bool overlay_dx11::init(uint32_t number_of_rendering_threads)
 
 	if (this->create_window() && this->initialize_context()) {
 		this->create_render_thread();
+		this->create_thread_without_tasks([this]() {
+			this->set_top_most();
+			});
 		return true;
 	}
 
@@ -74,7 +77,7 @@ bool overlay_dx11::initialize_context()
 {
 	DXGI_SWAP_CHAIN_DESC sd{};
 	ZeroMemory(&sd, sizeof(sd));
-	sd.BufferDesc.RefreshRate.Numerator = 240;
+	sd.BufferDesc.RefreshRate.Numerator = 120;
 	sd.BufferDesc.RefreshRate.Denominator = 1;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.BufferDesc.Width = this->overlay_dimensions.x;
@@ -117,15 +120,15 @@ bool overlay_dx11::initialize_context()
 bool overlay_dx11::create_window()
 {
 	RegisterClassExW(&this->wc);
-	this->hwnd = CreateWindowExW(WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED,
-								 this->wc.lpszClassName, util::string::string_to_wstring(this->window_name).data(), WS_POPUP, 0, 0,
+	this->hwnd = CreateWindowExW(WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_NOACTIVATE,
+								 this->wc.lpszClassName, util::string::string_to_wstring(this->window_name).data(), WS_POPUP, (this->screen_dimensions.x - this->overlay_dimensions.x) / 2, (this->screen_dimensions.y - this->overlay_dimensions.y) / 2,
 								 this->overlay_dimensions.x, this->overlay_dimensions.y, nullptr, nullptr,
 								 this->wc.hInstance, nullptr);
 
 	if (this->hwnd == nullptr) {
 		return false;
 	}
-
+	SetWindowDisplayAffinity(this->hwnd, WDA_EXCLUDEFROMCAPTURE);
 	SetLayeredWindowAttributes(this->hwnd, RGB(0, 0, 0), 255, LWA_ALPHA);
 
 	RECT client_area, window_area{};
@@ -173,14 +176,17 @@ void overlay_dx11::add_render_task(std::function<void(overlay_dx11*)> task)
 
 void overlay_dx11::render_loop()
 {
+	
 	ImGui_ImplWin32_NewFrame();
 	ImGui_ImplDX11_NewFrame();
 	ImGui::NewFrame();
 
 	swap_buffers();
 	execute_render_tasks();
-	ImGui::Render();
 
+
+
+	ImGui::Render();
 
 	constexpr float clear_color[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	this->device_context->OMSetRenderTargets(1, &this->render_target_view, nullptr);

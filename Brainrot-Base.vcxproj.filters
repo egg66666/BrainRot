@@ -60,6 +60,12 @@
     <ClCompile Include="extern\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SDK\SDKBase.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\signature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ntapi.h">
@@ -114,6 +120,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\CS2\CGameEntitySystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\CS2\sigs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\CS2\offsets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\signature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\CS2\CPlayerPawn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

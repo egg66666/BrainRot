@@ -47,6 +47,7 @@ public:
 		}
 	}
 	std::string name;
+	std::string path;
 	void* base;
 	uintptr_t size;
 	void* entry;

@@ -83,12 +83,26 @@ typedef struct _SYSTEM_HANDLE_INFORMATION
 //
 //};
 
+inline 	BOOL CALLBACK enum_windows(HWND hwnd, LPARAM l_param) {
+	DWORD process_id;
+	GetWindowThreadProcessId(hwnd, &process_id);
+
+	if (process_id == (DWORD)l_param) {
+		*((HWND*)l_param) = hwnd;
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
 class process {
 private:
 	std::unordered_map<std::string, _module*> modules;
 	std::uint32_t process_id = 0;
 	HANDLE process_handle;
 	std::string process_name;
+
+	HWND process_window;
 	process() = default;
 	process(const process&) = delete;
 	process(process&&) = delete;
@@ -102,6 +116,10 @@ private:
 public:
 
 	_module* operator[](std::string module_name) {
+		
+		if (!this->process_handle) {
+			this->process_handle = this->hijack_handle();
+		}
 		if (this->modules.find(module_name) == this->modules.end()) {
 			this->modules[module_name] = new _module(module_name);
 		}
@@ -117,9 +135,13 @@ public:
 
 	void init(std::string name) {
 		this->process_id = this->get_process_id(name);
+		// find window from proc name
+		EnumWindows(enum_windows, (LPARAM)&this->process_window);
 		this->process_name = name;
 	}
-
+	HWND get_process_window() const {
+		return this->process_window;
+	}
 	//this is a ref because it allows me to do cool shit like process["modulename"]
 	static process& get() {
 		static process instance;

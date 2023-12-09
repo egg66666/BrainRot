@@ -164,6 +164,8 @@
     <ClCompile Include="ntapi.cpp" />
     <ClCompile Include="overlay_dx11.cpp" />
     <ClCompile Include="process.cpp" />
+    <ClCompile Include="SDK\SDKBase.h" />
+    <ClCompile Include="SDK\signature.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="module.cpp" />
   </ItemGroup>
@@ -180,6 +182,11 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="misc.h" />
+    <ClInclude Include="SDK\CS2\CGameEntitySystem.h" />
+    <ClInclude Include="SDK\CS2\CPlayerPawn.h" />
+    <ClInclude Include="SDK\CS2\offsets.h" />
+    <ClInclude Include="SDK\CS2\sigs.h" />
+    <ClInclude Include="SDK\signature.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="ntapi.h" />
     <ClInclude Include="overlay_dx11.h" />
